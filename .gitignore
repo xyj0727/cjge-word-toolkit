@@ -14,3 +14,6 @@ wheels/
 .venv
 .env.example
 .idea
+
+# Node (skill dependencies)
+node_modules/

@@ -3,13 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "office-word-mcp-server"
-version = "1.1.11"
-description = "MCP server for manipulating Microsoft Word documents"
+name = "cjge-word-toolkit"
+version = "1.0.0"
+description = "Word MCP server (Office-Word-MCP-Server fork) + docx-editor-cn skill, formatting documents in the Chinese Journal of Geotechnical Engineering (CJGE) layout"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-    {name = "GongRzhe", email = "gongrzhe@gmail.com"}
+    {name = "GongRzhe", email = "gongrzhe@gmail.com"},
+    {name = "xyj0727"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -26,8 +27,9 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/GongRzhe/Office-Word-MCP-Server.git"
-"Bug Tracker" = "https://github.com/GongRzhe/Office-Word-MCP-Server.git/issues"
+"Homepage" = "https://github.com/xyj0727/cjge-word-toolkit"
+"Bug Tracker" = "https://github.com/xyj0727/cjge-word-toolkit/issues"
+"Upstream" = "https://github.com/GongRzhe/Office-Word-MCP-Server"
 
 [tool.hatch.build.targets.wheel]
 only-include = [

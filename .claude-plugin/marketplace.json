@@ -1,0 +1,13 @@
+{
+  "name": "cjge-word-toolkit",
+  "owner": {
+    "name": "xyj0727"
+  },
+  "plugins": [
+    {
+      "name": "cjge-word-toolkit",
+      "source": "./",
+      "description": "Word MCP server + docx-editor-cn skill in the CJGE (《岩土工程学报》) layout."
+    }
+  ]
+}

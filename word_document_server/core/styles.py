@@ -4,6 +4,9 @@ Style-related functions for Word Document Server.
 from docx.shared import Pt
 from docx.enum.style import WD_STYLE_TYPE
 
+from word_document_server.core.format_config import (
+    HEADING_FALLBACK_BOLD, HEADING_FALLBACK_SIZES, apply_named_styles)
+
 
 def ensure_heading_style(doc):
     """
@@ -21,18 +24,13 @@ def ensure_heading_style(doc):
             # Create the style if it doesn't exist
             try:
                 style = doc.styles.add_style(style_name, WD_STYLE_TYPE.PARAGRAPH)
-                if i == 1:
-                    style.font.size = Pt(16)
-                    style.font.bold = True
-                elif i == 2:
-                    style.font.size = Pt(14)
-                    style.font.bold = True
-                else:
-                    style.font.size = Pt(12)
-                    style.font.bold = True
+                style.font.size = Pt(HEADING_FALLBACK_SIZES.get(i, HEADING_FALLBACK_SIZES[3]))
+                style.font.bold = HEADING_FALLBACK_BOLD
             except Exception:
                 # If style creation fails, we'll just use default formatting
                 pass
+    # Heading 1-3 follow the configured document format (core/format_config.py).
+    apply_named_styles(doc, {"Heading 1", "Heading 2", "Heading 3"})
 
 
 def ensure_table_style(doc):

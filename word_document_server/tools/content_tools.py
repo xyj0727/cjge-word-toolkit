@@ -12,6 +12,8 @@ from docx.shared import Inches, Pt, RGBColor
 from word_document_server.utils.file_utils import check_file_writeable, ensure_docx_extension
 from word_document_server.utils.document_utils import find_and_replace_text, insert_header_near_text, insert_numbered_list_near_text, insert_line_or_paragraph_near_text, replace_paragraph_block_below_header, replace_block_between_manual_anchors
 from word_document_server.core.styles import ensure_heading_style, ensure_table_style
+from word_document_server.core.format_config import (
+    HEADING_FALLBACK_BOLD, HEADING_FALLBACK_SIZES, apply_three_line_table)
 
 
 async def add_heading(filename: str, text: str, level: int = 1,
@@ -66,14 +68,9 @@ async def add_heading(filename: str, text: str, level: int = 1,
             heading.style = doc.styles['Normal']
             if heading.runs:
                 run = heading.runs[0]
-                run.bold = True
-                # Adjust size based on heading level
-                if level == 1:
-                    run.font.size = Pt(16)
-                elif level == 2:
-                    run.font.size = Pt(14)
-                else:
-                    run.font.size = Pt(12)
+                run.bold = HEADING_FALLBACK_BOLD
+                # Adjust size based on heading level (core/format_config.py)
+                run.font.size = Pt(HEADING_FALLBACK_SIZES.get(level, HEADING_FALLBACK_SIZES[3]))
 
         # Apply formatting to all runs in the heading
         if any([font_name, font_size, bold is not None, italic is not None]):
@@ -196,13 +193,6 @@ async def add_table(filename: str, rows: int, cols: int, data: Optional[List[Lis
         doc = Document(filename)
         table = doc.add_table(rows=rows, cols=cols)
         
-        # Try to set the table style
-        try:
-            table.style = 'Table Grid'
-        except KeyError:
-            # If style doesn't exist, add basic borders
-            pass
-        
         # Fill table with data if provided
         if data:
             for i, row_data in enumerate(data):
@@ -212,6 +202,9 @@ async def add_table(filename: str, rows: int, cols: int, data: Optional[List[Lis
                     if j >= cols:
                         break
                     table.cell(i, j).text = str(cell_text)
+        
+        # Three-line table (core/format_config.py)
+        apply_three_line_table(table)
         
         doc.save(filename)
         return f"Table ({rows}x{cols}) added to {filename}"

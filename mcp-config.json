@@ -1,12 +1,9 @@
 {
   "mcpServers": {
     "word-document-server": {
-      "command": "/Users/gongzhe/GitRepos/Office-Word-MCP-Server/.venv/bin/python",
-      "args": [
-        "/Users/gongzhe/GitRepos/Office-Word-MCP-Server/word_mcp_server.py"
-      ],
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/xyj0727/cjge-word-toolkit", "word_mcp_server"],
       "env": {
-        "PYTHONPATH": "/Users/gongzhe/GitRepos/Office-Word-MCP-Server",
         "MCP_TRANSPORT": "stdio"
       }
     }

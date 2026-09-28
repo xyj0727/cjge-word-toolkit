@@ -9,6 +9,7 @@ from docx import Document
 from word_document_server.utils.file_utils import check_file_writeable, ensure_docx_extension, create_document_copy
 from word_document_server.utils.document_utils import get_document_properties, extract_document_text, get_document_structure, get_document_xml, insert_header_near_text, insert_line_or_paragraph_near_text
 from word_document_server.core.styles import ensure_heading_style, ensure_table_style
+from word_document_server.core.format_config import apply_document_defaults
 
 
 async def create_document(filename: str, title: Optional[str] = None, author: Optional[str] = None) -> str:
@@ -38,6 +39,7 @@ async def create_document(filename: str, title: Optional[str] = None, author: Op
         # Ensure necessary styles exist
         ensure_heading_style(doc)
         ensure_table_style(doc)
+        apply_document_defaults(doc)  # page setup, defaults and styles from core/format_config.py
         
         # Save the document
         doc.save(filename)

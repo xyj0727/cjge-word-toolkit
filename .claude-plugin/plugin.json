@@ -1,0 +1,19 @@
+{
+  "name": "cjge-word-toolkit",
+  "version": "1.0.0",
+  "description": "Word MCP server (Office-Word-MCP-Server fork) and the docx-editor-cn skill; every format except MathType follows the Chinese Journal of Geotechnical Engineering (CJGE, 《岩土工程学报》) layout.",
+  "author": {
+    "name": "xyj0727"
+  },
+  "homepage": "https://github.com/xyj0727/cjge-word-toolkit",
+  "repository": "https://github.com/xyj0727/cjge-word-toolkit",
+  "license": "MIT",
+  "keywords": ["word", "docx", "mcp", "academic-writing", "cjge", "岩土工程学报", "three-line-table", "claude"],
+  "skills": "./skills/",
+  "mcpServers": {
+    "word-document-server": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/xyj0727/cjge-word-toolkit", "word_mcp_server"]
+    }
+  }
+}
