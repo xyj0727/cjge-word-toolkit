@@ -56,6 +56,13 @@ _RPR_ORDER = ["w:rStyle", "w:rFonts", "w:b", "w:bCs", "w:i", "w:iCs", "w:caps", 
               "w:rtl", "w:cs", "w:em", "w:lang", "w:eastAsianLayout", "w:specVanish", "w:oMath"]
 
 
+_TBLPR_ORDER = ["w:tblStyle", "w:tblpPr", "w:tblOverlap", "w:bidiVisual", "w:tblStyleRowBandSize",
+                "w:tblStyleColBandSize", "w:tblW", "w:jc", "w:tblCellSpacing", "w:tblInd", "w:tblBorders", "w:shd",
+                "w:tblLayout", "w:tblCellMar", "w:tblLook", "w:tblCaption", "w:tblDescription"]
+_TCPR_ORDER = ["w:cnfStyle", "w:tcW", "w:gridSpan", "w:hMerge", "w:vMerge", "w:tcBorders", "w:shd", "w:noWrap",
+               "w:tcMar", "w:textDirection", "w:tcFitText", "w:vAlign", "w:hideMark"]
+
+
 def _child(parent, tag):
     el = parent.find(qn(tag))
     if el is None:
@@ -187,12 +194,14 @@ def apply_three_line_table(table):
     for side, pt in (("top", TABLE["top_bottom_pt"]), ("left", 0), ("bottom", TABLE["top_bottom_pt"]),
                      ("right", 0), ("insideH", 0), ("insideV", 0)):
         _border(borders, side, pt)
+    _reorder(tblPr, _TBLPR_ORDER)  # Word rejects tblPr children out of schema order
     rows = tbl.findall(qn("w:tr"))
     for r_index, tr in enumerate(rows):
         for tc in tr.findall(qn("w:tc")):
             if r_index == 0 and len(rows) > 1:
                 tcPr = tc.get_or_add_tcPr()
                 _border(_child(tcPr, "w:tcBorders"), "bottom", TABLE["header_rule_pt"])
+                _reorder(tcPr, _TCPR_ORDER)
             for p in tc.findall(qn("w:p")):
                 set_table_paragraph_format(p)
 
