@@ -154,6 +154,9 @@ def apply_document_defaults(doc):
         _child(rpr_default, "w:lang").set(qn("w:eastAsia"), "zh-CN")
         _reorder(rpr_default, _RPR_ORDER)
     apply_named_styles(doc)
+    zoom = doc.settings.element.find(qn("w:zoom"))
+    if zoom is not None and zoom.get(qn("w:percent")) is None:
+        zoom.set(qn("w:percent"), "100")  # python-docx template omits the schema-required percent
     for section in doc.sections:
         section.orientation = WD_ORIENT.PORTRAIT
         section.page_width = Cm(PAGE["width_cm"])
